@@ -2,11 +2,11 @@ package trees
 
 import nodes.TreeNode
 
-abstract class AbstractTree<K : Comparable<K>, V> {
+abstract class AbstractTree<K : Comparable<K>, V> : Iterable<Pair<K, V>> {
     protected var root: TreeNode<K, V>? = null
     protected var size: Int = 0
 
-    private fun searchNode(key: K): TreeNode<K, V>? {
+    protected fun searchNode(key: K): TreeNode<K, V>? {
         var currNode = this.root
         while (currNode?.key != key) {
             if (currNode == null) break
@@ -16,7 +16,7 @@ abstract class AbstractTree<K : Comparable<K>, V> {
         return currNode
     }
 
-    fun insert(key: K, value: V): Boolean {
+    open fun insert(key: K, value: V): Boolean {
         var foundNode = searchNode(key)
         var parentNode: TreeNode<K, V>?
         var foundNodeIsLeft = false
@@ -53,13 +53,13 @@ abstract class AbstractTree<K : Comparable<K>, V> {
         }
     }
 
-    fun search(key: K): V {
+    open fun search(key: K): V {
         val foundNode = searchNode(key)
         if (foundNode == null) throw Exception("Key is not found in the tree")
         else return foundNode.value
     }
 
-    fun delete(key: K): Boolean {
+    open fun delete(key: K): Boolean {
         val deleteNode = searchNode(key)
         val rightSubtreeRoot: TreeNode<K, V>?
         var currNode: TreeNode<K, V>?
@@ -126,5 +126,5 @@ abstract class AbstractTree<K : Comparable<K>, V> {
             return true
         }
     }
-    abstract fun createIterator(tree : AbstractTree<K, V>): Iterable<Pair<K, V>>
 }
+
