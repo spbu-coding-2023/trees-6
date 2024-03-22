@@ -25,6 +25,6 @@ class UnbalancedBSTree <K : Comparable<K>, V>  : AbstractTree<K, V>() {
     }
 
     override fun iterator() : Iterator<Pair<K, V>> {
-        return UnbalancedBSIterator(this.getPairs())
+        return UnbalancedBSTIterator(this.getPairs())
     }
 }

@@ -3,10 +3,10 @@ package trees
 import nodes.TreeNode
 
 abstract class AbstractTree<K : Comparable<K>, V> : Iterable<Pair<K, V>> {
-    protected var root: TreeNode<K, V>? = null
-    protected var size: Int = 0
+    protected open var root: TreeNode<K, V>? = null
+    protected open var size: Int = 0
 
-    protected fun searchNode(key: K): TreeNode<K, V>? {
+    protected open fun searchNode(key: K): TreeNode<K, V>? {
         var currNode = this.root
         while (currNode?.key != key) {
             if (currNode == null) break
