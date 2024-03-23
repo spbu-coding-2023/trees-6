@@ -25,10 +25,11 @@ src/main/kotlin
 │
 ├── nodes
 │   ├── TreeNode.kt  # Node of abstract binary tree and BST class
+│   ├── UnbalancedBSTNode.kt # Node of Unbalanced BST class
 │      
 ├── trees
 │   ├── AbstractTree.kt # Abstract binary tree class       
-│   ├── binarySearchTree
+│   ├── unbalancedBinarySearchTree
 │       ├── UnbalancedBSTIterator.kt # Iterator of Unbalanced BST class
 │       ├── UnbalancedBSTree.kt # Unbalanced BST class
 ```
