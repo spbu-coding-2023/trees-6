@@ -10,7 +10,7 @@ abstract class AbstractTree<K : Comparable<K>, V, N : TreeNode<K, V, N>> : Itera
         val currNode = root
         while (currNode?.key != key) {
             if (currNode == null) break
-            if (currNode.key < key) currNode.right
+            currNode = if (currNode.key < key) currNode.right
             else currNode.left
         }
         return currNode
