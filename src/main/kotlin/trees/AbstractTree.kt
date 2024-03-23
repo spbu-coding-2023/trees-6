@@ -7,7 +7,7 @@ abstract class AbstractTree<K : Comparable<K>, V, N : TreeNode<K, V, N>> : Itera
     protected open var size: Int = 0
 
     protected open fun searchNode(key: K): N? {
-        val currNode = root
+        var currNode = root
         while (currNode?.key != key) {
             if (currNode == null) break
             currNode = if (currNode.key < key) currNode.right
