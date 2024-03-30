@@ -1,4 +1,4 @@
-package trees.unbalancedBinarySearchTree
+package trees.unbalancedBST
 
 class UnbalancedBSTIterator<K : Comparable<K>, V>(treePairs: MutableList<Pair<K, V>>) : Iterator<Pair<K, V>> {
 

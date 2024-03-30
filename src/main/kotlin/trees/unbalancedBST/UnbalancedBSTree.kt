@@ -1,4 +1,4 @@
-package trees.unbalancedBinarySearchTree
+package trees.unbalancedBST
 
 import nodes.UnbalancedBSTNode
 import trees.AbstractTree

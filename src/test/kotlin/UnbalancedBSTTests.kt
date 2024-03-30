@@ -2,7 +2,7 @@ import nodes.UnbalancedBSTNode
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import trees.unbalancedBinarySearchTree.UnbalancedBSTree
+import trees.unbalancedBST.UnbalancedBSTree
 import kotlin.Int.Companion.MAX_VALUE
 import kotlin.Int.Companion.MIN_VALUE
 
