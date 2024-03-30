@@ -44,7 +44,7 @@ See [DOCS.md](./DOCS.md)
 ## Technologies used in the library <a name="technologies"></a>
 * [Kotlin 1.9.23](https://kotlinlang.org)
 * [Gradle 8.4](https://gradle.org)
-* [JDK 11](https://openjdk.org)
+* [JDK 17](https://openjdk.org)
 ## Our team and responsibility areas <a name="team"></a>
 * Kochergin Vyacheslav - Unbalanced binary search tree. [GitHub](https://github.com/VyacheslavIurevich), [Contact](https://t.me/se4life).
 * Marchenko Vadim - AVL-tree. [GitHub](https://github.com/elbananium), [Contact](https://t.me/elbananum).
