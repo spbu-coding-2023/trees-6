@@ -3,8 +3,9 @@ package trees
 import nodes.TreeNode
 
 abstract class AbstractTree<K : Comparable<K>, V, N : TreeNode<K, V, N>> : Iterable<Pair<K, V>> {
-    protected open var root: N? = null
-    protected open var size: Int = 0
+    internal open var root: N? = null
+    open var size: Int = 0
+        protected set
 
     protected open fun searchNode(key: K): N? {
         var currNode = root
@@ -67,11 +68,11 @@ abstract class AbstractTree<K : Comparable<K>, V, N : TreeNode<K, V, N>> : Itera
         val tempKey: K
         val tempValue: V
         if (deleteNode == null) return false
-        val currNode: N? = root
+        var currNode: N? = root
         if (currNode?.key == key) deleteNodeIsRoot = true
         while ((!deleteNodeIsRoot) && (currNode?.left?.key != key) && (currNode?.right?.key != key)) {
             if (currNode == null) break
-            if (currNode.key < key) currNode.right
+            currNode = if (currNode.key < key) currNode.right
             else currNode.left
         }
         val deleteNodeIsLeft: Boolean = currNode?.left?.key == key
@@ -80,7 +81,8 @@ abstract class AbstractTree<K : Comparable<K>, V, N : TreeNode<K, V, N>> : Itera
             else if (deleteNodeIsLeft) currNode?.left = null
             else currNode?.right = null
         }
-        if (deleteNode.left == null || deleteNode.right == null) {
+        // in this case we have 1 non-null child
+        else if (deleteNode.left == null || deleteNode.right == null) {
             val notNullChild: N? = if (deleteNode.left != null) deleteNode.left
             else deleteNode.right
             if (deleteNodeIsRoot) root = notNullChild

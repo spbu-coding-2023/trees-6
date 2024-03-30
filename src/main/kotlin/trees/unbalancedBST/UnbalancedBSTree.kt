@@ -1,4 +1,4 @@
-package trees.unbalancedBST
+package trees.unbalancedBinarySearchTree
 
 import nodes.UnbalancedBSTNode
 import trees.AbstractTree
@@ -10,7 +10,7 @@ class UnbalancedBSTree<K : Comparable<K>, V> : AbstractTree<K, V, UnbalancedBSTN
     private fun getPairs(): MutableList<Pair<K, V>> {
         val trajectory = mutableListOf<Pair<K, V>>()
         val stack: MutableList<UnbalancedBSTNode<K, V>?>
-        var currNode : UnbalancedBSTNode<K, V>? = root ?: return mutableListOf()
+        var currNode: UnbalancedBSTNode<K, V>? = root ?: return mutableListOf()
         stack = mutableListOf(currNode)
         while (stack.size > 0) {
             currNode = stack[stack.size - 1]
@@ -24,6 +24,5 @@ class UnbalancedBSTree<K : Comparable<K>, V> : AbstractTree<K, V, UnbalancedBSTN
         return trajectory
     }
 
-    override fun iterator(): Iterator<Pair<K, V>> = UnbalancedBSTIterator(this.getPairs())
+    override fun iterator(): Iterator<Pair<K, V>> = UnbalancedBSTIterator(getPairs())
 }
-
