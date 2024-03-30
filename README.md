@@ -21,23 +21,30 @@ You can store values of any types by keys of comparable type. Each tree provides
 * Iterate through tree.
 ## File structure <a name="filestructure"></a>
 ```
-src/main/kotlin
+src
+├──main/kotlin
+│  │
+│  ├── nodes
+│  │   ├── TreeNode.kt  # Node of abstract binary tree and BST class
+│  │   ├── UnbalancedBSTNode.kt # Node of Unbalanced BST class
+│  │      
+│  ├── trees
+│  │   ├── AbstractTree.kt # Abstract binary tree class       
+│  │   ├── unbalancedBST
+│  │       ├── UnbalancedBSTIterator.kt # Iterator of Unbalanced BST class
+│  │       ├── UnbalancedBSTree.kt # Unbalanced BST class
 │
-├── nodes
-│   ├── TreeNode.kt  # Node of abstract binary tree and BST class
-│   ├── UnbalancedBSTNode.kt # Node of Unbalanced BST class
-│      
-├── trees
-│   ├── AbstractTree.kt # Abstract binary tree class       
-│   ├── unbalancedBST
-│       ├── UnbalancedBSTIterator.kt # Iterator of Unbalanced BST class
-│       ├── UnbalancedBSTree.kt # Unbalanced BST class
+├──test/kotlin
+│  │
+│  ├── UnbalancedBSTTests.kt # Unit tests of Unbalanced BST
+│  │
 ```
 ## How to use <a name="howtouse"></a>
 See [DOCS.md](./DOCS.md)
 ## Technologies used in the library <a name="technologies"></a>
 * [Kotlin 1.9.23](https://kotlinlang.org)
 * [Gradle 8.4](https://gradle.org)
+* [JDK 17](https://openjdk.org)
 ## Our team and responsibility areas <a name="team"></a>
 * Kochergin Vyacheslav - Unbalanced binary search tree. [GitHub](https://github.com/VyacheslavIurevich), [Contact](https://t.me/se4life).
 * Marchenko Vadim - AVL-tree. [GitHub](https://github.com/elbananium), [Contact](https://t.me/elbananum).
