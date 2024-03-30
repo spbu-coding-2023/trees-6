@@ -63,7 +63,7 @@ class UnbalancedBSTTests {
             assert(tree.insert((MIN_VALUE..MAX_VALUE).random(), (MIN_VALUE..MAX_VALUE).random()))
         }
         assert(checkInvariant())
-        assert(tree.size <= 100000)
+        assert(tree.size <= 10000)
     }
 
     @Test
