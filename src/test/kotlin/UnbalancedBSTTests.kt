@@ -326,6 +326,23 @@ class UnbalancedBSTTests {
     }
 
     @Test
+    @DisplayName("delete root with two children, right subtree root has left children, right subtree min has right child")
+    fun deleteRootTwoChildrenRightSubtreeRootHasNoLeftChildrenRightSubtreeMinHasRightChild() {
+        assert(tree.insert(10, 1))
+        assert(tree.insert(9, 1))
+        assert(tree.insert(15, 1))
+        assert(tree.insert(20, 1))
+        assert(tree.insert(25, 1))
+        assert(tree.insert(18, 1))
+        assert(tree.insert(19, 1))
+        assert(tree.insert(16, 1))
+        assert(tree.insert(17, 1))
+        assert(tree.delete(10))
+        assert(checkInvariant())
+        assert(tree.size == 8)
+    }
+
+    @Test
     @DisplayName("simple iterator test")
     fun iterateSimpleTree() {
         repeat(100) {

@@ -35,7 +35,6 @@ abstract class AbstractTree<K : Comparable<K>, V, N : TreeNode<K, V, N>> : Itera
                 ++size
                 return true
             }
-            return false
         }
         while (foundNode != null) {
             if (parentNode == null) return false
@@ -96,7 +95,7 @@ abstract class AbstractTree<K : Comparable<K>, V, N : TreeNode<K, V, N>> : Itera
                         root?.key = rightSubtreeRoot.key
                         root?.value = rightSubtreeRoot.value
                         root?.right = null
-                    } else return false
+                    }
                 } else if (deleteNodeIsLeft) currNode?.left = rightSubtreeRoot
                 else currNode?.right = rightSubtreeRoot
             } else {
