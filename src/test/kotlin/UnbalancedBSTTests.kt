@@ -3,8 +3,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import trees.unbalancedBST.UnbalancedBSTree
-import kotlin.Int.Companion.MAX_VALUE
-import kotlin.Int.Companion.MIN_VALUE
 
 class UnbalancedBSTTests {
     private lateinit var tree: UnbalancedBSTree<Int, Int>
@@ -301,7 +299,8 @@ class UnbalancedBSTTests {
     @DisplayName("simple iterator test")
     fun iterateSimpleTree() {
         repeat(100) {
-            assert(tree.insert((MIN_VALUE..MAX_VALUE).random(), (MIN_VALUE..MAX_VALUE).random()))
+            assert(tree.insert(it, it))
+	    assert(tree.insert(100 - it, it))
         }
         for (keyValuePair in tree) {
             assert(keyValuePair.second == tree.search(keyValuePair.first))
