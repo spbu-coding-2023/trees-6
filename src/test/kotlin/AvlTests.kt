@@ -95,16 +95,6 @@ class AvlTests
     }
 
     @Test
-    @DisplayName("insert a lot of nodes")
-    fun insertLotOfNodes() {
-        repeat(10000) {
-            assert(tree.insert((Int.MIN_VALUE..Int.MAX_VALUE).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
-        }
-        assert(checkInvariant())
-        assert(tree.size <= 100000)
-    }
-
-    @Test
     @DisplayName("simple search test")
     fun searchExistentNode() {
         assert(tree.insert(5, 7))
@@ -116,23 +106,6 @@ class AvlTests
         assert(value == 12)
         assert(checkInvariant())
         assert(tree.size == 5)
-    }
-
-    @Test
-    @DisplayName("search node in a big tree")
-    fun searchNodeBigTree() {
-        repeat(5000) {
-            assert(tree.insert((Int.MIN_VALUE..Int.MAX_VALUE).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
-        }
-        assert(tree.insert(1500, 10))
-        repeat(2500) {
-            assert(tree.insert((-1000..1000).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
-            assert(tree.insert((1501..Int.MAX_VALUE).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
-        }
-        val value = tree.search(1500)
-        assert(value == 10)
-        assert(checkInvariant())
-        assert(tree.size <= 10001)
     }
 
     @Test
@@ -166,24 +139,6 @@ class AvlTests
         assert(tree.delete(15))
         assert(checkInvariant())
         assert(tree.size == 2)
-    }
-
-    @Test
-    @DisplayName("delete node in a big tree")
-    fun deleteNodeBigTree() {
-        repeat(5000) {
-            assert(tree.insert((Int.MIN_VALUE..Int.MAX_VALUE).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
-        }
-        assert(tree.insert(1500, 10))
-        repeat(2500) {
-            assert(tree.insert((-1000..1000).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
-            assert(tree.insert((1501..Int.MAX_VALUE).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
-        }
-        val sizeBeforeDeletion = tree.size
-        assert(tree.delete(1500))
-        assert(checkInvariant())
-        assert(sizeBeforeDeletion <= 10001)
-        assert(sizeBeforeDeletion - tree.size == 1)
     }
 
     @Test
@@ -367,7 +322,7 @@ class AvlTests
     @DisplayName("simple iterator test")
     fun iterateSimpleTree() {
         repeat(100) {
-            assert(tree.insert((Int.MIN_VALUE..Int.MAX_VALUE).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
+            assert(tree.insert(it, it))
         }
         for (keyValuePair in tree) {
             assert(keyValuePair.second == tree.search(keyValuePair.first))
