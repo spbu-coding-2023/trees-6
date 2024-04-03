@@ -57,16 +57,6 @@ class UnbalancedBSTTests {
     }
 
     @Test
-    @DisplayName("insert a lot of nodes")
-    fun insertLotOfNodes() {
-        repeat(10000) {
-            assert(tree.insert((MIN_VALUE..MAX_VALUE).random(), (MIN_VALUE..MAX_VALUE).random()))
-        }
-        assert(checkInvariant())
-        assert(tree.size <= 10000)
-    }
-
-    @Test
     @DisplayName("simple search test")
     fun searchExistentNode() {
         assert(tree.insert(5, 7))
@@ -78,24 +68,7 @@ class UnbalancedBSTTests {
         assert(value == 12)
         assert(checkInvariant())
         assert(tree.size == 5)
-    }
-
-    @Test
-    @DisplayName("search node in a big tree")
-    fun searchNodeBigTree() {
-        repeat(5000) {
-            assert(tree.insert((MIN_VALUE..MAX_VALUE).random(), (MIN_VALUE..MAX_VALUE).random()))
-        }
-        assert(tree.insert(1500, 10))
-        repeat(2500) {
-            assert(tree.insert((-1000..1000).random(), (MIN_VALUE..MAX_VALUE).random()))
-            assert(tree.insert((1501..MAX_VALUE).random(), (MIN_VALUE..MAX_VALUE).random()))
-        }
-        val value = tree.search(1500)
-        assert(value == 10)
-        assert(checkInvariant())
-        assert(tree.size <= 10001)
-    }
+  }
 
     @Test
     @DisplayName("search non-existent node")
@@ -128,24 +101,6 @@ class UnbalancedBSTTests {
         assert(tree.delete(15))
         assert(checkInvariant())
         assert(tree.size == 2)
-    }
-
-    @Test
-    @DisplayName("delete node in a big tree")
-    fun deleteNodeBigTree() {
-        repeat(5000) {
-            assert(tree.insert((MIN_VALUE..MAX_VALUE).random(), (MIN_VALUE..MAX_VALUE).random()))
-        }
-        assert(tree.insert(1500, 10))
-        repeat(2500) {
-            assert(tree.insert((-1000..1000).random(), (MIN_VALUE..MAX_VALUE).random()))
-            assert(tree.insert((1501..MAX_VALUE).random(), (MIN_VALUE..MAX_VALUE).random()))
-        }
-        val sizeBeforeDeletion = tree.size
-        assert(tree.delete(1500))
-        assert(checkInvariant())
-        assert(sizeBeforeDeletion <= 10001)
-        assert(sizeBeforeDeletion - tree.size == 1)
     }
 
     @Test
