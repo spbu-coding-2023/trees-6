@@ -6,6 +6,7 @@ import trees.unbalancedBST.UnbalancedBSTree
 
 class UnbalancedBSTTests {
     private lateinit var tree: UnbalancedBSTree<Int, Int>
+    private var treeSize = 0
 
     private fun checkInvariant(): Boolean {
         val stack: MutableList<UnbalancedBSTNode<Int, Int>?>
@@ -16,6 +17,7 @@ class UnbalancedBSTTests {
             currNode = stack[stack.size - 1]
             stack.removeAt(stack.size - 1)
             if (currNode != null) {
+                ++treeSize
                 child = currNode.left
                 if (child != null) {
                     if (child.key > currNode.key) return false
@@ -28,12 +30,13 @@ class UnbalancedBSTTests {
                 }
             }
         }
-        return true
+        return tree.size == treeSize
     }
 
     @BeforeEach
     fun setup() {
         tree = UnbalancedBSTree()
+        treeSize = 0
     }
 
     @Test
@@ -66,7 +69,7 @@ class UnbalancedBSTTests {
         assert(value == 12)
         assert(checkInvariant())
         assert(tree.size == 5)
-  }
+    }
 
     @Test
     @DisplayName("search non-existent node")
@@ -91,14 +94,10 @@ class UnbalancedBSTTests {
     }
 
     @Test
-    @DisplayName("simple deletion test")
-    fun deleteLeafNode() {
-        assert(tree.insert(10, 5))
-        assert(tree.insert(5, 2))
-        assert(tree.insert(15, 3))
-        assert(tree.delete(15))
-        assert(checkInvariant())
-        assert(tree.size == 2)
+    @DisplayName("delete from empty tree")
+    fun deleteFromEmptyTree() {
+        assert(!tree.delete(5))
+        assert(tree.size == 0)
     }
 
     @Test
@@ -121,6 +120,26 @@ class UnbalancedBSTTests {
     }
 
     @Test
+    @DisplayName("delete root with only left child")
+    fun deleteRootOnlyLeftChild() {
+        assert(tree.insert(10, 1))
+        assert(tree.insert(5, 1))
+        assert(tree.delete(10))
+        assert(tree.root?.key == 5)
+        assert(tree.size == 1)
+    }
+
+    @Test
+    @DisplayName("delete root with only right child")
+    fun deleteRootOnlyRightChild() {
+        assert(tree.insert(10, 1))
+        assert(tree.insert(15, 1))
+        assert(tree.delete(10))
+        assert(tree.root?.key == 15)
+        assert(tree.size == 1)
+    }
+
+    @Test
     @DisplayName("delete left leaf with no child")
     fun deleteLeftLeafNoChild() {
         assert(tree.insert(10, 1))
@@ -140,26 +159,6 @@ class UnbalancedBSTTests {
         assert(tree.delete(15))
         assert(checkInvariant())
         assert(tree.size == 2)
-    }
-
-    @Test
-    @DisplayName("delete root with only left child")
-    fun deleteRootOnlyLeftChild() {
-        assert(tree.insert(10, 1))
-        assert(tree.insert(5, 1))
-        assert(tree.delete(10))
-        assert(tree.root?.key == 5)
-        assert(tree.size == 1)
-    }
-
-    @Test
-    @DisplayName("delete root with only right child")
-    fun deleteRootOnlyRightChild() {
-        assert(tree.insert(10, 1))
-        assert(tree.insert(15, 1))
-        assert(tree.delete(10))
-        assert(tree.root?.key == 15)
-        assert(tree.size == 1)
     }
 
     @Test
@@ -247,7 +246,7 @@ class UnbalancedBSTTests {
 
     @Test
     @DisplayName("delete node with two children, right subtree root has left children, right subtree min is a leaf")
-    fun deleteNodeTwoChildrenRightSubtreeRootHasNoLeftChildrenRightSubtreeMinLeaf() {
+    fun deleteNodeTwoChildrenRightSubtreeMinLeaf() {
         assert(tree.insert(10, 1))
         assert(tree.insert(15, 1))
         assert(tree.insert(12, 1))
@@ -263,7 +262,7 @@ class UnbalancedBSTTests {
 
     @Test
     @DisplayName("delete node with two children, right subtree root has left children, right subtree min has right child")
-    fun deleteNodeTwoChildrenRightSubtreeRootHasNoLeftChildrenRightSubtreeMinHasRightChild() {
+    fun deleteNodeTwoChildrenRightSubtreeMinHasRightChild() {
         assert(tree.insert(10, 1))
         assert(tree.insert(15, 1))
         assert(tree.insert(12, 1))
@@ -280,7 +279,7 @@ class UnbalancedBSTTests {
 
     @Test
     @DisplayName("delete root with two children, right subtree root has left children, right subtree min has right child")
-    fun deleteRootTwoChildrenRightSubtreeRootHasNoLeftChildrenRightSubtreeMinHasRightChild() {
+    fun deleteRootTwoChildrenRightSubtreeMinHasRightChild() {
         assert(tree.insert(10, 1))
         assert(tree.insert(9, 1))
         assert(tree.insert(15, 1))
@@ -300,7 +299,7 @@ class UnbalancedBSTTests {
     fun iterateSimpleTree() {
         repeat(100) {
             assert(tree.insert(it, it))
-	    assert(tree.insert(100 - it, it))
+            assert(tree.insert(100 - it, it))
         }
         for (keyValuePair in tree) {
             assert(keyValuePair.second == tree.search(keyValuePair.first))
@@ -315,4 +314,5 @@ class UnbalancedBSTTests {
         for (keyValuePair in tree) ++cnt
         assert(cnt == 0)
     }
+
 }
