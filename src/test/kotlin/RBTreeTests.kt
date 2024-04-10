@@ -3,37 +3,79 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import trees.redBlackTree.RBTree
+import kotlin.math.max
 
 class RBTreeTests {
 
 	private lateinit var tree: RBTree<Int, Int>
 
-	private fun checkInvariant(): Boolean {
-		val stack: MutableList<RBTreeNode<Int, Int>?>
-		var currNode: RBTreeNode<Int, Int>? = tree.root ?: return true
-		var child: RBTreeNode<Int, Int>?
-		stack = mutableListOf(currNode)
-		while (stack.size > 0) {
-			currNode = stack[stack.size - 1]
-			stack.removeAt(stack.size - 1)
-			if (currNode != null) {
-				child = currNode.left
-				if (child != null) {
-					if (child.key > currNode.key) {
+	private fun checkTreeInvariants(): Boolean { // assuming tree size is correct
+		var currNode: RBTreeNode<Int, Int>? = tree.root
+		if (currNode == null) {
+			return true // empty tree
+		} else if (currNode.isRed()) {
+			return false // red root error
+		} else {
+			val stack: MutableList<RBTreeNode<Int, Int>?> = mutableListOf(currNode)
+
+			while (stack.size > 0) {
+				currNode = stack[stack.size - 1]
+
+				stack.removeAt(stack.size - 1)
+
+				if (currNode != null) {
+					val leftChild: RBTreeNode<Int, Int>? = currNode.left
+
+					if (leftChild != null) {
+						if (leftChild.key > currNode.key) {
+							return false
+						}
+
+						if (leftChild.isRed() && currNode.isRed()) {
+							return false
+						}
+
+						stack.add(leftChild)
+					}
+
+					val rightChild: RBTreeNode<Int, Int>? = currNode.right
+
+					if (rightChild != null) {
+						if (rightChild.key < currNode.key) {
+							return false
+						}
+
+						if (rightChild.isRed() && currNode.isRed()) {
+							return false
+						}
+
+						stack.add(rightChild)
+					}
+
+					/*
+					if (getBH(0, leftChild) != getBH(0, rightChild)) {
 						return false
 					}
-					stack.add(child)
-				}
-				child = currNode.right
-				if (child != null) {
-					if (child.key < currNode.key){
-						return false
-					}
-					stack.add(child)
+					 */
 				}
 			}
+
+			return true
 		}
-		return true
+	}
+
+	private fun getBH(value: Int, node: RBTreeNode<Int, Int>?): Int {
+		if (node == null) {
+			return value
+		} else
+		{
+			var s: Int = value
+			if (!node.isRed()) {
+				s++
+			}
+
+			return max(getBH(s, node.left), getBH(s, node.right))
+		}
 	}
 
 	@BeforeEach
@@ -55,8 +97,9 @@ class RBTreeTests {
 		assert(tree.insert(0, 55))
 		assert(tree.insert(10, 1))
 		assert(tree.insert(5, 7))
-		assert(checkInvariant())
+
 		assert(tree.size == 5)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -65,8 +108,9 @@ class RBTreeTests {
 		repeat(10000) {
 			assert(tree.insert((Int.MIN_VALUE..Int.MAX_VALUE).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
 		}
-		assert(checkInvariant())
+
 		assert(tree.size <= 10000)
+		assert(checkTreeInvariants()) // error!
 	}
 
 	@Test
@@ -77,10 +121,12 @@ class RBTreeTests {
 		assert(tree.insert(10, 5))
 		assert(tree.insert(7, 5))
 		assert(tree.insert(8, 12))
+
 		val value = tree.search(8)
 		assert(value == 12)
-		assert(checkInvariant())
+
 		assert(tree.size == 5)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -94,10 +140,12 @@ class RBTreeTests {
 			assert(tree.insert((-1000..1000).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
 			assert(tree.insert((1501..Int.MAX_VALUE).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
 		}
+
 		val value = tree.search(1500)
 		assert(value == 10)
-		assert(checkInvariant())
+
 		assert(tree.size <= 10001)
+		assert(checkTreeInvariants())  // error!
 	}
 
 	@Test
@@ -105,10 +153,12 @@ class RBTreeTests {
 	fun searchDefunctNode() {
 		assert(tree.insert(5, 2))
 		assert(tree.insert(15, 7))
+
 		val value = tree.search(10)
 		assert(value == null)
-		assert(checkInvariant())
+
 		assert(tree.size == 2)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -116,10 +166,12 @@ class RBTreeTests {
 	fun changeValue() {
 		assert(tree.insert(5, 2))
 		assert(tree.insert(5, 6))
+
 		val value = tree.search(5)
 		assert(value == 6)
-		assert(checkInvariant())
+
 		assert(tree.size == 1)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -128,9 +180,11 @@ class RBTreeTests {
 		assert(tree.insert(10, 5))
 		assert(tree.insert(5, 2))
 		assert(tree.insert(15, 3))
+
 		assert(tree.delete(15))
-		assert(checkInvariant())
+
 		assert(tree.size == 2)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -144,11 +198,14 @@ class RBTreeTests {
 			assert(tree.insert((-1000..1000).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
 			assert(tree.insert((1501..Int.MAX_VALUE).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
 		}
+
 		val sizeBeforeDeletion = tree.size
-		assert(tree.delete(1500))
-		assert(checkInvariant())
 		assert(sizeBeforeDeletion <= 10001)
+		assert(checkTreeInvariants()) // to be deleted?!
+
+		assert(tree.delete(1500))
 		assert(sizeBeforeDeletion - tree.size == 1)
+		assert(checkTreeInvariants()) // error!
 	}
 
 	@Test
@@ -157,9 +214,10 @@ class RBTreeTests {
 		assert(tree.insert(10, 1))
 		assert(tree.insert(5, 1))
 		assert(tree.insert(15, 1))
+
 		assert(!tree.delete(1))
-		assert(checkInvariant())
 		assert(tree.size == 3)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -168,6 +226,16 @@ class RBTreeTests {
 		assert(tree.insert(1, 5))
 		assert(tree.delete(1))
 		assert(tree.size == 0)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("delete from empty tree")
+	fun deleteFromEmptyTree() {
+		assert(!tree.delete(1))
+
+		assert(tree.size == 0)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -176,9 +244,11 @@ class RBTreeTests {
 		assert(tree.insert(10, 1))
 		assert(tree.insert(5, 1))
 		assert(tree.insert(15, 1))
+
 		assert(tree.delete(5))
-		assert(checkInvariant())
+
 		assert(tree.size == 2)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -187,9 +257,11 @@ class RBTreeTests {
 		assert(tree.insert(10, 1))
 		assert(tree.insert(5, 1))
 		assert(tree.insert(15, 1))
+
 		assert(tree.delete(15))
-		assert(checkInvariant())
+
 		assert(tree.size == 2)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -197,9 +269,12 @@ class RBTreeTests {
 	fun deleteRootOnlyLeftChild() {
 		assert(tree.insert(10, 1))
 		assert(tree.insert(5, 1))
+
 		assert(tree.delete(10))
-		assert(tree.root?.key == 5)
+
 		assert(tree.size == 1)
+		assert(tree.root?.key == 5)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -207,9 +282,12 @@ class RBTreeTests {
 	fun deleteRootOnlyRightChild() {
 		assert(tree.insert(10, 1))
 		assert(tree.insert(15, 1))
+
 		assert(tree.delete(10))
-		assert(tree.root?.key == 15)
+
 		assert(tree.size == 1)
+		assert(tree.root?.key == 15)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -218,9 +296,11 @@ class RBTreeTests {
 		assert(tree.insert(10, 1))
 		assert(tree.insert(9, 1))
 		assert(tree.insert(8, 1))
-		assert(tree.delete(9))
-		assert(checkInvariant())
+
+		assert(tree.delete(9)) // error!
+
 		assert(tree.size == 2)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -229,9 +309,11 @@ class RBTreeTests {
 		assert(tree.insert(10, 1))
 		assert(tree.insert(8, 1))
 		assert(tree.insert(9, 1))
+
 		assert(tree.delete(8))
-		assert(checkInvariant())
+
 		assert(tree.size == 2)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -240,9 +322,11 @@ class RBTreeTests {
 		assert(tree.insert(10, 1))
 		assert(tree.insert(12, 1))
 		assert(tree.insert(11, 1))
+
 		assert(tree.delete(12))
-		assert(checkInvariant())
+
 		assert(tree.size == 2)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -251,9 +335,11 @@ class RBTreeTests {
 		assert(tree.insert(10, 1))
 		assert(tree.insert(11, 1))
 		assert(tree.insert(12, 1))
-		assert(tree.delete(11))
-		assert(checkInvariant())
+
+		assert(tree.delete(11)) // error!
+
 		assert(tree.size == 2)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -264,9 +350,12 @@ class RBTreeTests {
 		assert(tree.insert(11, 1))
 		assert(tree.insert(12, 1))
 		assert(tree.insert(15, 1))
+
 		assert(tree.delete(11))
-		assert(checkInvariant())
+
 		assert(tree.size == 4)
+		assert(checkTreeInvariants())
+
 	}
 
 	@Test
@@ -277,9 +366,11 @@ class RBTreeTests {
 		assert(tree.insert(5, 1))
 		assert(tree.insert(7, 1))
 		assert(tree.insert(8, 1))
-		assert(tree.delete(6))
-		assert(checkInvariant())
+
+		assert(tree.delete(6)) // error!
+
 		assert(tree.size == 4)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -290,9 +381,11 @@ class RBTreeTests {
 		assert(tree.insert(12, 1))
 		assert(tree.insert(16, 1))
 		assert(tree.insert(18, 1))
+
 		assert(tree.delete(15))
-		assert(checkInvariant())
+
 		assert(tree.size == 4)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -306,9 +399,11 @@ class RBTreeTests {
 		assert(tree.insert(18, 1))
 		assert(tree.insert(19, 1))
 		assert(tree.insert(16, 1))
+
 		assert(tree.delete(15))
-		assert(checkInvariant())
+
 		assert(tree.size == 7)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -323,9 +418,11 @@ class RBTreeTests {
 		assert(tree.insert(19, 1))
 		assert(tree.insert(16, 1))
 		assert(tree.insert(17, 1))
+
 		assert(tree.delete(15))
-		assert(checkInvariant())
+
 		assert(tree.size == 8)
+		assert(checkTreeInvariants()) // error!
 	}
 
 	@Test
@@ -339,8 +436,9 @@ class RBTreeTests {
 		assert(tree.insert(25, 25))
 		assert(tree.insert(40, 4))
 		assert(tree.insert(80, 0))
-		assert(checkInvariant())
+
 		assert(tree.size == 8)
+		assert(checkTreeInvariants()) // error!
 	}
 
 	@Test
@@ -352,7 +450,8 @@ class RBTreeTests {
 		for (keyValuePair in tree) {
 			assert(keyValuePair.second == tree.search(keyValuePair.first))
 		}
-		assert(checkInvariant())
+
+		assert(checkTreeInvariants()) // error!
 	}
 
 	@Test
@@ -361,5 +460,7 @@ class RBTreeTests {
 		var cnt = 0
 		for (keyValuePair in tree) ++cnt
 		assert(cnt == 0)
+
+		assert(checkTreeInvariants())
 	}
 }

@@ -4,25 +4,28 @@ import nodes.RBTreeNode
 import trees.AbstractTree
 
 open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>() {
-	// Using an implementation of https://algs4.cs.princeton.edu/33balanced/RedBlackBST.java.html
+	// Using an implementation of https://algs4.cs.princeton.edu/33balanced/RedBlackBST.java.html version by Robert Sedgewick & Kevin Wayne
 
 	override fun createNode(key: K, value: V): RBTreeNode<K, V> = RBTreeNode(key, value) // default: Red
 	private fun checkNodeRed(node: RBTreeNode<K, V>?): Boolean = node != null && node.isRed()
 
 	override fun insert(key: K, value: V): Boolean {
-		root = insertNode(key, value, root) // result??
+		root = insertNode(key, value, root)
 		size++
 
 		root?.setColor(RBTreeNode.Color.Black)
 		return true
 	}
 	private fun insertNode(key: K, value: V, node: RBTreeNode<K, V>?): RBTreeNode<K, V> {
-		var currNode = node ?: return RBTreeNode(key, value)
+		var currNode = node ?: return createNode(key, value)
 
 		when {
 			key < currNode.key -> currNode.left = insertNode(key, value, currNode.left)
 			key > currNode.key -> currNode.right = insertNode(key, value, currNode.right)
-			else -> currNode.value = value
+			else -> {
+				currNode.value = value
+				size--
+			}
 		}
 
 		if (checkNodeRed(currNode.right) && !checkNodeRed(currNode.left)) {
@@ -84,7 +87,7 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 	}
 
 	override fun delete(key: K): Boolean {
-		if (root == null && search(key) == null) {
+		if (root == null || search(key) == null) {
 			return false
 		}
 
@@ -140,11 +143,7 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 	}
 
 	private fun minNode(node: RBTreeNode<K, V>?): RBTreeNode<K, V>? {
-		return if (node == null) {
-			null
-		} else {
-			minNode(node.left)
-		}
+		return if (node == null) null else minNode(node.left)
 	}
 	private fun deleteMin(node: RBTreeNode<K, V>?): RBTreeNode<K, V>? {
 		var currNode: RBTreeNode<K, V>? = node ?: return null
