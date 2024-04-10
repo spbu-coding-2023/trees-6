@@ -17,7 +17,7 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 		return true
 	}
 	private fun insertNode(key: K, value: V, node: RBTreeNode<K, V>?): RBTreeNode<K, V> {
-		var currNode = node ?: return createNode(key, value)
+		val currNode = node ?: return createNode(key, value)
 
 		when {
 			key < currNode.key -> currNode.left = insertNode(key, value, currNode.left)
@@ -28,11 +28,13 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 			}
 		}
 
+		// order?????
+
 		if (checkNodeRed(currNode.right) && !checkNodeRed(currNode.left)) {
-			currNode = rotateLeft(currNode)!! // !!!!!
+			rotateLeft(currNode)
 		}
 		if (checkNodeRed(currNode.left) && checkNodeRed(currNode.left?.left)) {
-			currNode = rotateRight(currNode)!! // !!!!!
+			rotateRight(currNode)
 		}
 		if (checkNodeRed(currNode.left) && checkNodeRed(currNode.right)) {
 			flipColors(currNode)
@@ -41,47 +43,48 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 		return currNode
 	}
 
-	private fun rotateLeft(node: RBTreeNode<K, V>): RBTreeNode<K, V>? {
-		val tempNode: RBTreeNode<K, V>? = node.right
+	private fun rotateLeft(currNode: RBTreeNode<K, V>?) {
+		if (currNode?.right != null) { // guaranteed that the right is not null
+			val tempNode: RBTreeNode<K, V> = createNode(currNode.key, currNode.value)
+			tempNode.left = currNode.left
+			tempNode.right = currNode.right?.left
 
-		node.right = tempNode?.left
-		tempNode?.left = node
+			currNode.key = currNode.right!!.key
+			currNode.value = currNode.right!!.value
 
-		tempNode?.setColor(node.color)
-		node.setColor(RBTreeNode.Color.Red)
-
-		return tempNode
+			currNode.left = tempNode
+			currNode.right = currNode.right?.right
+		}
 	}
-	private fun rotateRight(node: RBTreeNode<K, V>): RBTreeNode<K, V>? {
-		val tempNode: RBTreeNode<K, V>? = node.left
+	private fun rotateRight(currNode: RBTreeNode<K, V>?) {
+		if (currNode?.left != null) { // guaranteed that the left is not null
+			val tempNode: RBTreeNode<K, V> = createNode(currNode.key, currNode.value)
+			tempNode.left = currNode.left?.right
+			tempNode.right = currNode.right
 
-		node.left = tempNode?.right
-		tempNode?.right = node
+			currNode.key = currNode.left!!.key
+			currNode.value = currNode.left!!.value
 
-		tempNode?.setColor(node.color)
-		node.setColor(RBTreeNode.Color.Red)
-
-		return tempNode
+			currNode.left = currNode.left?.left
+			currNode.right = tempNode
+		}
 	}
 	private fun flipColors(currNode: RBTreeNode<K, V>) {
 		if (checkNodeRed(currNode)) {
 			currNode.setColor(RBTreeNode.Color.Black)
-		} else
-		{
+		} else {
 			currNode.setColor(RBTreeNode.Color.Red)
 		}
 
 		if (checkNodeRed(currNode.left)) {
 			currNode.setColor(RBTreeNode.Color.Black)
-		} else
-		{
+		} else {
 			currNode.setColor(RBTreeNode.Color.Red)
 		}
 
 		if (checkNodeRed(currNode.right)) {
 			currNode.setColor(RBTreeNode.Color.Black)
-		} else
-		{
+		} else {
 			currNode.setColor(RBTreeNode.Color.Red)
 		}
 	}
@@ -111,18 +114,18 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 			if (!checkNodeRed(currNode.left) && !checkNodeRed(currNode.left?.left)) {
 				currNode = moveRedLeft(currNode)
 			}
-			currNode?.left = deleteNode(key, currNode?.left)
+			currNode.left = deleteNode(key, currNode.left)
 		}
 		else {
 			if (checkNodeRed(currNode.left)) {
-				currNode = rotateRight(currNode)
+				rotateRight(currNode)
 			}
 
-			if (key == currNode?.key && currNode.right == null) {
+			if (key == currNode.key && currNode.right == null) {
 				return null
 			}
 
-			if (!checkNodeRed(currNode?.right) && !checkNodeRed(currNode?.right?.left)) {
+			if (!checkNodeRed(currNode.right) && !checkNodeRed(currNode.right?.left)) {
 				currNode = moveRedRight(currNode)
 			}
 
@@ -156,57 +159,49 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 			currNode = moveRedLeft(currNode)
 		}
 
-		currNode?.left = deleteMin(currNode?.left)
+		currNode.left = deleteMin(currNode.left)
 		return balance(currNode)
 	}
 
-	private fun moveRedLeft(node: RBTreeNode<K, V>): RBTreeNode<K, V>? {
-		var currNode: RBTreeNode<K, V>? = node
+	private fun moveRedLeft(node: RBTreeNode<K, V>): RBTreeNode<K, V> {
+		val currNode: RBTreeNode<K, V> = node
 
-		if (currNode != null) {
+		flipColors(currNode)
+
+		if (checkNodeRed(currNode.right?.left)) {
+			rotateRight(currNode.right)
+			rotateLeft(currNode)
+
 			flipColors(currNode)
-
-			if (checkNodeRed(currNode.right?.left)) {
-				currNode.right = rotateRight(currNode.right!!) // !!!!!
-				currNode = rotateLeft(currNode)
-
-				if (currNode != null) {
-					flipColors(currNode)
-				}
-			}
-
 		}
 
 		return currNode
 	}
 	private fun moveRedRight(node: RBTreeNode<K, V>?): RBTreeNode<K, V>? {
-		var currNode: RBTreeNode<K, V>? = node
+		val currNode: RBTreeNode<K, V>? = node
 
 		if (currNode != null) {
 			flipColors(currNode)
 
 			if (checkNodeRed(currNode.left?.left)) {
-				currNode = rotateRight(currNode)
+				rotateRight(currNode)
 
-				if (currNode != null) {
-					flipColors(currNode)
-				}
+				flipColors(currNode)
 			}
 		}
 
 		return currNode
 	}
-	private fun balance(node: RBTreeNode<K, V>?): RBTreeNode<K, V>? {
-		var currNode = node
+	private fun balance(currNode: RBTreeNode<K, V>?): RBTreeNode<K, V>? {
 
 		if (currNode != null) {
 			if (checkNodeRed(currNode.right) && !checkNodeRed(currNode.left)) {
-				currNode = rotateLeft(currNode)
+				rotateLeft(currNode)
 			}
-			if (checkNodeRed(currNode?.left) && checkNodeRed(currNode?.left?.left)) {
-				currNode = rotateRight(currNode!!) // !!!!!
+			if (checkNodeRed(currNode.left) && checkNodeRed(currNode.left?.left)) {
+				rotateRight(currNode)
 			}
-			if (currNode != null && checkNodeRed(currNode.left) && checkNodeRed(currNode.right)) {
+			if (checkNodeRed(currNode.left) && checkNodeRed(currNode.right)) {
 				flipColors(currNode)
 			}
 		}

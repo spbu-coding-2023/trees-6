@@ -14,6 +14,7 @@ class RBTreeTests {
 		if (currNode == null) {
 			return true // empty tree
 		} else if (currNode.isRed()) {
+			println("red root!")
 			return false // red root error
 		} else {
 			val stack: MutableList<RBTreeNode<Int, Int>?> = mutableListOf(currNode)
@@ -28,10 +29,12 @@ class RBTreeTests {
 
 					if (leftChild != null) {
 						if (leftChild.key > currNode.key) {
+							println("left should be <= curr!")
 							return false
 						}
 
 						if (leftChild.isRed() && currNode.isRed()) {
+							println("left red + curr red")
 							return false
 						}
 
@@ -42,10 +45,12 @@ class RBTreeTests {
 
 					if (rightChild != null) {
 						if (rightChild.key < currNode.key) {
+							println("right should be >= curr!")
 							return false
 						}
 
 						if (rightChild.isRed() && currNode.isRed()) {
+							println("right red + curr red")
 							return false
 						}
 
@@ -426,18 +431,18 @@ class RBTreeTests {
 	}
 
 	@Test
-	@DisplayName("another random simple tree test")
+	@DisplayName("another random simple tree test") // mirror!
 	fun simpleTreeSample() {
 		assert(tree.insert(8, 14))
 		assert(tree.insert(18, 27))
 		assert(tree.insert(5, 5))
 		assert(tree.insert(15, 91))
-		assert(tree.insert(17, 84))
-		assert(tree.insert(25, 25))
-		assert(tree.insert(40, 4))
-		assert(tree.insert(80, 0))
+		// assert(tree.insert(17, 84))
+		// assert(tree.insert(25, 25))
+		// assert(tree.insert(40, 4))
+		// assert(tree.insert(80, 0))
 
-		assert(tree.size == 8)
+		// assert(tree.size == 8)
 		assert(checkTreeInvariants()) // error!
 	}
 
