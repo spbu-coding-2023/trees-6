@@ -113,7 +113,7 @@ class RBTreeTests {
 		}
 
 		assert(tree.size <= 10000)
-		assert(checkTreeInvariants()) // error!
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -148,7 +148,7 @@ class RBTreeTests {
 		assert(value == 10)
 
 		assert(tree.size <= 10001)
-		assert(checkTreeInvariants())  // error!
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -204,11 +204,11 @@ class RBTreeTests {
 
 		val sizeBeforeDeletion = tree.size
 		assert(sizeBeforeDeletion <= 10001)
-		assert(checkTreeInvariants()) // to be deleted?!
+		assert(checkTreeInvariants())
 
 		assert(tree.delete(1500))
 		assert(sizeBeforeDeletion - tree.size == 1)
-		assert(checkTreeInvariants()) // error!
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -300,7 +300,7 @@ class RBTreeTests {
 		assert(tree.insert(9, 1))
 		assert(tree.insert(8, 1))
 
-		assert(tree.delete(9)) // error!
+		assert(tree.delete(9))
 
 		assert(tree.size == 2)
 		assert(checkTreeInvariants())
@@ -339,7 +339,7 @@ class RBTreeTests {
 		assert(tree.insert(11, 1))
 		assert(tree.insert(12, 1))
 
-		assert(tree.delete(11)) // error!
+		assert(tree.delete(11))
 
 		assert(tree.size == 2)
 		assert(checkTreeInvariants())
@@ -370,7 +370,7 @@ class RBTreeTests {
 		assert(tree.insert(7, 1))
 		assert(tree.insert(8, 1))
 
-		assert(tree.delete(6)) // error!
+		assert(tree.delete(6))
 
 		assert(tree.size == 4)
 		assert(checkTreeInvariants())
@@ -425,7 +425,7 @@ class RBTreeTests {
 		assert(tree.delete(15))
 
 		assert(tree.size == 8)
-		assert(checkTreeInvariants()) // error!
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -435,13 +435,13 @@ class RBTreeTests {
 		assert(tree.insert(18, 27))
 		assert(tree.insert(5, 5))
 		assert(tree.insert(15, 91))
-		// assert(tree.insert(17, 84))
-		// assert(tree.insert(25, 25))
-		// assert(tree.insert(40, 4))
-		// assert(tree.insert(80, 0))
+		assert(tree.insert(17, 84))
+		assert(tree.insert(25, 25))
+		assert(tree.insert(40, 4))
+		assert(tree.insert(80, 0))
 
-		// assert(tree.size == 8)
-		assert(checkTreeInvariants()) // error!
+		assert(tree.size == 8)
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -453,7 +453,7 @@ class RBTreeTests {
 		assert(tree.insert(15, 51))
 
 		assert(tree.size == 4)
-		assert(checkTreeInvariants()) // error!
+		assert(checkTreeInvariants())
 	}
 
 	@Test
@@ -466,7 +466,7 @@ class RBTreeTests {
 			assert(keyValuePair.second == tree.search(keyValuePair.first))
 		}
 
-		assert(checkTreeInvariants()) // error!
+		assert(checkTreeInvariants())
 	}
 
 	@Test
