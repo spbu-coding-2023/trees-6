@@ -88,7 +88,7 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 	}
 
 	override fun delete(key: K): Boolean {
-		if (root == null || search(key) == null) {
+		if (search(key) == null) { // null root???
 			return false
 		}
 
@@ -128,10 +128,12 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 			}
 
 			if (key == currNode?.key) {
-				val minNode = minNode(currNode.right)
+				val minNode = minNode(currNode.right) // guaranteed??
 
-				currNode.key = minNode!!.key // !!!!!
-				currNode.value = minNode.value
+				if (minNode != null) {
+					currNode.key = minNode.key
+					currNode.value = minNode.value
+				}
 
 				currNode.right = deleteMin(currNode.right)
 			}
