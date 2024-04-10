@@ -8,22 +8,6 @@ class AvlTree<K : Comparable<K>, V> : AbstractTree<K,V,AvlNode<K,V>>() {
 
     override fun iterator(): Iterator<Pair<K, V>> =  AvlTreeIterator(getPairs())
 
-    private fun getPairs(): MutableList<Pair<K, V>> {
-        val trajectory = mutableListOf<Pair<K, V>>()
-        val stack: MutableList<AvlNode<K, V>?>
-        var currNode: AvlNode<K, V>? = root ?: return mutableListOf()
-        stack = mutableListOf(currNode)
-        while (stack.size > 0) {
-            currNode = stack[stack.size - 1]
-            stack.removeAt(stack.size - 1)
-            if (currNode != null) {
-                stack.add(currNode.left)
-                stack.add(currNode.right)
-                trajectory.add(Pair(currNode.key, currNode.value))
-            }
-        }
-        return trajectory
-    }
     private fun balanceFactor(node: AvlNode<K, V>) = (node.right?.height ?: 0) - (node.left?.height ?: 0)
 
 
