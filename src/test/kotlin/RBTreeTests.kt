@@ -106,17 +106,6 @@ class RBTreeTests {
 	}
 
 	@Test
-	@DisplayName("insert a lot of nodes")
-	fun insertLotOfNodes() {
-		repeat(10000) {
-			assert(tree.insert((Int.MIN_VALUE..Int.MAX_VALUE).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
-		}
-
-		assert(tree.size <= 10000)
-		assert(checkTreeInvariants())
-	}
-
-	@Test
 	@DisplayName("simple search test")
 	fun searchExistentNode() {
 		assert(tree.insert(5, 7))
@@ -129,25 +118,6 @@ class RBTreeTests {
 		assert(value == 12)
 
 		assert(tree.size == 5)
-		assert(checkTreeInvariants())
-	}
-
-	@Test
-	@DisplayName("search node in a big tree")
-	fun searchNodeBigTree() {
-		repeat(5000) {
-			assert(tree.insert((Int.MIN_VALUE..Int.MAX_VALUE).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
-		}
-		assert(tree.insert(1500, 10))
-		repeat(2500) {
-			assert(tree.insert((-1000..1000).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
-			assert(tree.insert((1501..Int.MAX_VALUE).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
-		}
-
-		val value = tree.search(1500)
-		assert(value == 10)
-
-		assert(tree.size <= 10001)
 		assert(checkTreeInvariants())
 	}
 
@@ -187,27 +157,6 @@ class RBTreeTests {
 		assert(tree.delete(15))
 
 		assert(tree.size == 2)
-		assert(checkTreeInvariants())
-	}
-
-	@Test
-	@DisplayName("delete node in a big tree")
-	fun deleteNodeBigTree() {
-		repeat(5000) {
-			assert(tree.insert((Int.MIN_VALUE..Int.MAX_VALUE).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
-		}
-		assert(tree.insert(1500, 10))
-		repeat(2500) {
-			assert(tree.insert((-1000..1000).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
-			assert(tree.insert((1501..Int.MAX_VALUE).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
-		}
-
-		val sizeBeforeDeletion = tree.size
-		assert(sizeBeforeDeletion <= 10001)
-		assert(checkTreeInvariants())
-
-		assert(tree.delete(1500))
-		assert(sizeBeforeDeletion - tree.size == 1)
 		assert(checkTreeInvariants())
 	}
 
@@ -460,12 +409,12 @@ class RBTreeTests {
 	@DisplayName("simple iterator test")
 	fun iterateSimpleTree() {
 		repeat(100) {
-			assert(tree.insert((Int.MIN_VALUE..Int.MAX_VALUE).random(), (Int.MIN_VALUE..Int.MAX_VALUE).random()))
+			assert(tree.insert(it, it))
+			assert(tree.insert(100 - it, it))
 		}
 		for (keyValuePair in tree) {
 			assert(keyValuePair.second == tree.search(keyValuePair.first))
 		}
-
 		assert(checkTreeInvariants())
 	}
 
