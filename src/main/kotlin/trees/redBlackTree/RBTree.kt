@@ -28,8 +28,6 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 			}
 		}
 
-		// order?????
-
 		if (checkNodeRed(currNode.right) && !checkNodeRed(currNode.left)) {
 			rotateLeft(currNode)
 		}
@@ -77,15 +75,15 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 		}
 
 		if (checkNodeRed(currNode.left)) {
-			currNode.setColor(RBTreeNode.Color.Black)
+			currNode.left?.setColor(RBTreeNode.Color.Black)
 		} else {
-			currNode.setColor(RBTreeNode.Color.Red)
+			currNode.left?.setColor(RBTreeNode.Color.Red)
 		}
 
 		if (checkNodeRed(currNode.right)) {
-			currNode.setColor(RBTreeNode.Color.Black)
+			currNode.right?.setColor(RBTreeNode.Color.Black)
 		} else {
-			currNode.setColor(RBTreeNode.Color.Red)
+			currNode.right?.setColor(RBTreeNode.Color.Red)
 		}
 	}
 

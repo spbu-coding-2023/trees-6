@@ -57,11 +57,9 @@ class RBTreeTests {
 						stack.add(rightChild)
 					}
 
-					/*
-					if (getBH(0, leftChild) != getBH(0, rightChild)) {
+					if (getBH(0, leftChild) != getBH(0, rightChild)) { // BH from this place
 						return false
 					}
-					 */
 				}
 			}
 
@@ -431,8 +429,8 @@ class RBTreeTests {
 	}
 
 	@Test
-	@DisplayName("another random simple tree test") // mirror!
-	fun simpleTreeSample() {
+	@DisplayName("another simple tree test")
+	fun simpleTreeSample1() {
 		assert(tree.insert(8, 14))
 		assert(tree.insert(18, 27))
 		assert(tree.insert(5, 5))
@@ -443,6 +441,18 @@ class RBTreeTests {
 		// assert(tree.insert(80, 0))
 
 		// assert(tree.size == 8)
+		assert(checkTreeInvariants()) // error!
+	}
+
+	@Test
+	@DisplayName("another simple tree test")
+	fun simpleTreeSample2() {
+		assert(tree.insert(24, 14))
+		assert(tree.insert(5, 27))
+		assert(tree.insert(1, 5))
+		assert(tree.insert(15, 51))
+
+		assert(tree.size == 4)
 		assert(checkTreeInvariants()) // error!
 	}
 
