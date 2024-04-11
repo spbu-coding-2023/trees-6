@@ -26,7 +26,7 @@ Example of insertion. insert() method returns boolean value, which shows if inse
 ```kotlin
 if (tree.insert(2, 5)) println("Key-value pair (2, 5) inserted successfully")
 ```
-Example of searching by key.
+Example of searching by key. search() method returns value, which is stored in pair with such key (if there is no such key in the tree, search() returns null).
 ```kotlin
 val foundValue = tree.search(2)
 ```
@@ -34,7 +34,7 @@ Example of deletion by key. delete() method returns boolean value, which shows i
 ```kotlin
 if (tree.delete(2)) println("Key 5 deleted from the tree successfully")
 ```
-Example of iterating through the tree.
+Examples of iterating through the tree.
 ```kotlin
 for (keyValuePair in tree) {
     println(keyValuePair)
