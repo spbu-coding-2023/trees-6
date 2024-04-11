@@ -1,6 +1,6 @@
-package trees.avl
+package trees
 
-class AvlTreeIterator<K : Comparable<K>, V>(treePairs: MutableList<Pair<K, V>>) : Iterator<Pair<K, V>> {
+class TreeIterator<K : Comparable<K>, V>(treePairs: MutableList<Pair<K, V>>) : Iterator<Pair<K, V>> {
 
     private var pairIndex = 0
     private val trajectory = treePairs
@@ -8,3 +8,4 @@ class AvlTreeIterator<K : Comparable<K>, V>(treePairs: MutableList<Pair<K, V>>) 
     override fun hasNext(): Boolean = pairIndex < trajectory.size
     override fun next(): Pair<K, V> = trajectory[pairIndex++]
 }
+
