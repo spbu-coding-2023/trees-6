@@ -2,7 +2,7 @@ import nodes.RBTreeNode
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import trees.redBlackTree.RBTree
+import trees.RBTree
 import kotlin.math.max
 
 class RBTreeTests {

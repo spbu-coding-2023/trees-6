@@ -1,4 +1,4 @@
-package trees
+package trees.abstractTree
 
 class TreeIterator<K : Comparable<K>, V>(treePairs: MutableList<Pair<K, V>>) : Iterator<Pair<K, V>> {
 

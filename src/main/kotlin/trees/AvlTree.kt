@@ -1,7 +1,7 @@
-package trees.avl
+package trees
 
 import nodes.AvlNode
-import trees.AbstractTree
+import trees.abstractTree.AbstractTree
 
 class AvlTree<K : Comparable<K>, V> : AbstractTree<K,V,AvlNode<K,V>>() {
     override fun createNode(key: K, value: V): AvlNode<K, V> = AvlNode(key, value);

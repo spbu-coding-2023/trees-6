@@ -2,7 +2,7 @@ import nodes.AvlNode
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import trees.avl.AvlTree
+import trees.AvlTree
 class AvlTests
 {
     private lateinit var tree: AvlTree<Int, Int>

@@ -27,16 +27,22 @@ src
 │  ├── nodes
 │  │   ├── TreeNode.kt  # Node of abstract binary tree and BST class
 │  │   ├── UnbalancedBSTNode.kt # Node of Unbalanced BST class
+│  │   ├── AvlNode.kt # Node of AVL-tree class
+│  │   ├── RBTreeNode.kt # Node of RB tree class
 │  │      
 │  ├── trees
-│  │   ├── AbstractTree.kt # Abstract binary tree class       
-│  │   ├── unbalancedBST
-│  │       ├── UnbalancedBSTIterator.kt # Iterator of Unbalanced BST class
-│  │       ├── UnbalancedBSTree.kt # Unbalanced BST class
+│  │   ├── UnbalancedBSTree.kt # Unbalanced BST class
+│  │   ├── AvlTree.kt # AVL-tree class
+│  │   ├── RBTree.kt # RB tree class
+│  │   ├── abstractTree
+│  │       ├── AbstractTree.kt # Abstract binary tree class
+│  │       ├── TreeIterator.kt # Tree iterator class
 │
 ├──test/kotlin
 │  │
 │  ├── UnbalancedBSTTests.kt # Unit tests of Unbalanced BST
+│  ├── AvlTests.kt # Unit tests of AVL-tree
+│  ├── RBTreeTests.kt # Unit tests of RB tree
 │  │
 ```
 ## How to use <a name="howtouse"></a>

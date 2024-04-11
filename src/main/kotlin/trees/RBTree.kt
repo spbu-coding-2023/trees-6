@@ -1,7 +1,7 @@
-package trees.redBlackTree
+package trees
 
 import nodes.RBTreeNode
-import trees.AbstractTree
+import trees.abstractTree.AbstractTree
 
 open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>() {
 	// Using an implementation of https://algs4.cs.princeton.edu/33balanced/RedBlackBST.java.html version by Robert Sedgewick & Kevin Wayne
