@@ -1,13 +1,12 @@
 package nodes
 
 class RBTreeNode<K: Comparable<K>, V>(key: K, value: V) : TreeNode<K, V, RBTreeNode<K, V>>(key, value) {
-	enum class Color {
+	internal enum class Color {
 		Red,
 		Black
 	}
 
-	internal var color: Color = Color.Red
-		private set
+	private var color: Color = Color.Red
 
 	internal fun setColor(color: Color) {
 		this.color = color

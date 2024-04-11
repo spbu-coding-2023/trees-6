@@ -70,8 +70,7 @@ class RBTreeTests {
 	private fun getBH(value: Int, node: RBTreeNode<Int, Int>?): Int {
 		if (node == null) {
 			return value
-		} else
-		{
+		} else {
 			var s: Int = value
 			if (!node.isRed()) {
 				s++

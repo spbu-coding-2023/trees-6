@@ -113,8 +113,7 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 				currNode = moveRedLeft(currNode)
 			}
 			currNode.left = deleteNode(key, currNode.left)
-		}
-		else {
+		} else {
 			if (checkNodeRed(currNode.left)) {
 				rotateRight(currNode)
 			}
@@ -136,8 +135,7 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 				}
 
 				currNode.right = deleteMin(currNode.right)
-			}
-			else {
+			} else {
 				currNode?.right = deleteNode(key, currNode?.right)
 			}
 		}
