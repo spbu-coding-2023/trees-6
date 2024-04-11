@@ -208,8 +208,4 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 
 		return currNode
 	}
-
-	override fun iterator(): Iterator<Pair<K, V>> {
-		return RBTreeIterator(this.getPairs())
-	}
 }

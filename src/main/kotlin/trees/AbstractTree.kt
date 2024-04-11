@@ -118,7 +118,7 @@ abstract class AbstractTree<K : Comparable<K>, V, N : TreeNode<K, V, N>> : Itera
         return true
     }
 
-    protected fun getPairs(): MutableList<Pair<K, V>> {
+    private fun getPairs(): MutableList<Pair<K, V>> {
         val trajectory = mutableListOf<Pair<K, V>>()
         var currNode: N? = root ?: return mutableListOf()
         val stack = mutableListOf(currNode)
@@ -133,5 +133,7 @@ abstract class AbstractTree<K : Comparable<K>, V, N : TreeNode<K, V, N>> : Itera
         }
         return trajectory
     }
+
+    override fun iterator(): Iterator<Pair<K, V>> = TreeIterator(getPairs())
 }
 
