@@ -45,4 +45,7 @@ tree.forEach {
     println(it)
 }
 ```
-
+Also, you can receive a size of the tree (quantity of key-value pairs it contains).
+```kotlin
+val treeSize = tree.size
+```
