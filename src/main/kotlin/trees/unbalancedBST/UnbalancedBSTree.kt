@@ -7,6 +7,5 @@ class UnbalancedBSTree<K : Comparable<K>, V> : AbstractTree<K, V, UnbalancedBSTN
 
     override fun createNode(key: K, value: V): UnbalancedBSTNode<K, V> = UnbalancedBSTNode(key, value)
 
-    override fun iterator(): Iterator<Pair<K, V>> = UnbalancedBSTIterator(getPairs())
 }
 

@@ -6,8 +6,6 @@ import trees.AbstractTree
 class AvlTree<K : Comparable<K>, V> : AbstractTree<K,V,AvlNode<K,V>>() {
     override fun createNode(key: K, value: V): AvlNode<K, V> = AvlNode(key, value);
 
-    override fun iterator(): Iterator<Pair<K, V>> =  AvlTreeIterator(getPairs())
-
     private fun balanceFactor(node: AvlNode<K, V>) = (node.right?.height ?: 0) - (node.left?.height ?: 0)
 
 
