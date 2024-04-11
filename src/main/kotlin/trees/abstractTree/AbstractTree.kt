@@ -1,4 +1,4 @@
-package trees
+package trees.abstractTree
 
 import nodes.TreeNode
 

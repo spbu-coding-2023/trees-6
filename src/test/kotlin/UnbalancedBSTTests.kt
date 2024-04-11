@@ -2,7 +2,7 @@ import nodes.UnbalancedBSTNode
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import trees.unbalancedBST.UnbalancedBSTree
+import trees.UnbalancedBSTree
 
 class UnbalancedBSTTests {
     private lateinit var tree: UnbalancedBSTree<Int, Int>
