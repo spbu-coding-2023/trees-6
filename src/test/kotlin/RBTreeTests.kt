@@ -105,6 +105,34 @@ class RBTreeTests {
 	}
 
 	@Test
+	@DisplayName("another simple tree test")
+	fun simpleTreeSample1() {
+		assert(tree.insert(8, 14))
+		assert(tree.insert(18, 27))
+		assert(tree.insert(5, 5))
+		assert(tree.insert(15, 91))
+		assert(tree.insert(17, 84))
+		assert(tree.insert(25, 25))
+		assert(tree.insert(40, 4))
+		assert(tree.insert(80, 0))
+
+		assert(tree.size == 8)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("another simple tree test")
+	fun simpleTreeSample2() {
+		assert(tree.insert(24, 14))
+		assert(tree.insert(5, 27))
+		assert(tree.insert(1, 5))
+		assert(tree.insert(15, 51))
+
+		assert(tree.size == 4)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
 	@DisplayName("simple search test")
 	fun searchExistentNode() {
 		assert(tree.insert(5, 7))
@@ -148,10 +176,23 @@ class RBTreeTests {
 
 	@Test
 	@DisplayName("simple deletion test")
-	fun deleteLeafNode() {
+	fun deleteLeafNode1() {
 		assert(tree.insert(10, 5))
 		assert(tree.insert(5, 2))
 		assert(tree.insert(15, 3))
+
+		assert(tree.delete(15))
+
+		assert(tree.size == 2)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("root deletion test")
+	fun deleteRootNode() {
+		assert(tree.insert(10, 5))
+		assert(tree.insert(15, 2))
+		assert(tree.insert(5, 3))
 
 		assert(tree.delete(15))
 
@@ -377,8 +418,8 @@ class RBTreeTests {
 	}
 
 	@Test
-	@DisplayName("another simple tree test")
-	fun simpleTreeSample1() {
+	@DisplayName("root deletion test")
+	fun rootFromBigTree1() {
 		assert(tree.insert(8, 14))
 		assert(tree.insert(18, 27))
 		assert(tree.insert(5, 5))
@@ -388,19 +429,28 @@ class RBTreeTests {
 		assert(tree.insert(40, 4))
 		assert(tree.insert(80, 0))
 
-		assert(tree.size == 8)
+		assert(tree.delete(8))
+
+		assert(tree.size == 7)
 		assert(checkTreeInvariants())
 	}
 
 	@Test
-	@DisplayName("another simple tree test")
-	fun simpleTreeSample2() {
-		assert(tree.insert(24, 14))
-		assert(tree.insert(5, 27))
-		assert(tree.insert(1, 5))
-		assert(tree.insert(15, 51))
+	@DisplayName("root deletion test")
+	fun rootFromBigTree2() {
+		assert(tree.insert(8, 14))
+		assert(tree.insert(4, 27))
+		assert(tree.insert(2, 5))
+		assert(tree.insert(6, 91))
+		assert(tree.insert(1, 84))
+		assert(tree.insert(3, 25))
+		assert(tree.insert(5, 4))
+		assert(tree.insert(7, 0))
+		assert(tree.insert(12, 0))
 
-		assert(tree.size == 4)
+		assert(tree.delete(8))
+
+		assert(tree.size == 8)
 		assert(checkTreeInvariants())
 	}
 
@@ -416,6 +466,7 @@ class RBTreeTests {
 		}
 		assert(checkTreeInvariants())
 	}
+
 
 	@Test
 	@DisplayName("iterate through empty tree test")
