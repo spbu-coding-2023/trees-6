@@ -4,7 +4,7 @@ import nodes.RBTreeNode
 import trees.abstractTree.AbstractTree
 
 open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>() {
-	// Using an implementation of https://algs4.cs.princeton.edu/33balanced/RedBlackBST.java.html version by Robert Sedgewick & Kevin Wayne
+	// Using an implementation of https://algs4.cs.princeton.edu/33balanced/ by Robert Sedgewick & Kevin Wayne
 
 	override fun createNode(key: K, value: V): RBTreeNode<K, V> = RBTreeNode(key, value) // default: Red
 	private fun checkNodeRed(node: RBTreeNode<K, V>?): Boolean = node != null && node.isRed()
@@ -24,7 +24,7 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 			key > currNode.key -> currNode.right = insertNode(key, value, currNode.right)
 			else -> {
 				currNode.value = value
-				size--
+				size-- // it will be incremented anyway
 			}
 		}
 
@@ -113,8 +113,7 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 				currNode = moveRedLeft(currNode)
 			}
 			currNode.left = deleteNode(key, currNode.left)
-		}
-		else {
+		} else {
 			if (checkNodeRed(currNode.left)) {
 				rotateRight(currNode)
 			}
@@ -136,8 +135,7 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 				}
 
 				currNode.right = deleteMin(currNode.right)
-			}
-			else {
+			} else {
 				currNode?.right = deleteNode(key, currNode?.right)
 			}
 		}
