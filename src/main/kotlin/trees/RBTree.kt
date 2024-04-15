@@ -6,7 +6,7 @@ import trees.abstractTree.AbstractTree
 open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>() {
 	// Using an implementation of https://algs4.cs.princeton.edu/33balanced/ by Robert Sedgewick & Kevin Wayne
 
-	override fun createNode(key: K, value: V): RBTreeNode<K, V> = RBTreeNode(key, value) // default: Red
+	override fun createNode(key: K, value: V): RBTreeNode<K, V> = RBTreeNode(key, value) // default color is Red
 	private fun checkNodeRed(node: RBTreeNode<K, V>?): Boolean = node != null && node.isRed()
 
 	override fun insert(key: K, value: V): Boolean {
@@ -18,6 +18,10 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 	}
 	private fun insertNode(key: K, value: V, node: RBTreeNode<K, V>?): RBTreeNode<K, V> {
 		val currNode = node ?: return createNode(key, value)
+
+		if (checkNodeRed(currNode.left) && checkNodeRed(currNode.right)) {
+			flipColors(currNode)
+		}
 
 		when {
 			key < currNode.key -> currNode.left = insertNode(key, value, currNode.left)
@@ -34,9 +38,11 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 		if (checkNodeRed(currNode.left) && checkNodeRed(currNode.left?.left)) {
 			rotateRight(currNode)
 		}
-		if (checkNodeRed(currNode.left) && checkNodeRed(currNode.right)) {
+		/*
+		if (checkNodeRed(currNode.left) && checkNodeRed(currNode.right)) { // order?
 			flipColors(currNode)
 		}
+		*/
 
 		return currNode
 	}
@@ -92,9 +98,11 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 			return false
 		}
 
-		if (!checkNodeRed(root?.left) && !checkNodeRed(root?.right)) {
+		/*
+		if (!checkNodeRed(root?.left) && !checkNodeRed(root?.right)) { // don't need this??
 			root?.setColor(RBTreeNode.Color.Red)
 		}
+		*/
 
 		root = deleteNode(key, root)
 		size--
@@ -103,14 +111,12 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 		return true
 	}
 	private fun deleteNode(key: K, node: RBTreeNode<K, V>?): RBTreeNode<K, V>? {
-		if (node == null) {
-			return null
-		}
+		val currNode = node ?: return null
 
-		var currNode = node
 		if (key < currNode.key)  {
-			if (!checkNodeRed(currNode.left) && !checkNodeRed(currNode.left?.left)) {
-				currNode = moveRedLeft(currNode)
+			if (currNode.left == null || (!checkNodeRed(currNode.left) && !checkNodeRed(currNode.left?.left))) { // should remove it??
+				// currNode = moveRedLeft(currNode)
+				moveRedLeft(currNode)
 			}
 			currNode.left = deleteNode(key, currNode.left)
 		} else {
@@ -122,78 +128,77 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 				return null
 			}
 
-			if (!checkNodeRed(currNode.right) && !checkNodeRed(currNode.right?.left)) {
-				currNode = moveRedRight(currNode)
+			if (currNode.right == null || (!checkNodeRed(currNode.right) && !checkNodeRed(currNode.right?.left))) { // should remove it??
+				moveRedRight(currNode)
 			}
 
-			if (key == currNode?.key) {
+			if (key == currNode.key) {
 				val minNode = minNode(currNode.right)
 
 				if (minNode != null) {
 					currNode.key = minNode.key
 					currNode.value = minNode.value
+
+					currNode.right = deleteMin(currNode.right)
 				}
 
-				currNode.right = deleteMin(currNode.right)
 			} else {
-				currNode?.right = deleteNode(key, currNode?.right)
+				currNode.right = deleteNode(key, currNode.right)
 			}
 		}
 
-		return balance(currNode)
+		balance(currNode)
+		return currNode
 	}
 
 	private fun minNode(node: RBTreeNode<K, V>?): RBTreeNode<K, V>? {
-		return if (node == null) null else minNode(node.left)
+		var currNode = node
+		while (currNode?.left != null) {
+			currNode = currNode.left
+		}
+
+		return currNode
 	}
 	private fun deleteMin(node: RBTreeNode<K, V>?): RBTreeNode<K, V>? {
-		var currNode: RBTreeNode<K, V>? = node ?: return null
+		val currNode: RBTreeNode<K, V> = node ?: return null
 
-		if (currNode?.left == null) {
+		if (currNode.left == null) {
 			return null
 		}
 
 		if (!checkNodeRed(currNode.left) && !checkNodeRed(currNode.left?.left)) {
-			currNode = moveRedLeft(currNode)
+			moveRedLeft(currNode)
 		}
 
 		currNode.left = deleteMin(currNode.left)
-		return balance(currNode)
+
+		balance(currNode)
+		return currNode
 	}
 
-	private fun moveRedLeft(node: RBTreeNode<K, V>): RBTreeNode<K, V> {
-		val currNode: RBTreeNode<K, V> = node
+	private fun moveRedLeft(currNode: RBTreeNode<K, V>) {
+		flipColors(currNode) // ???
 
-		flipColors(currNode)
-
-		if (checkNodeRed(currNode.right?.left)) {
+		if (checkNodeRed(currNode.right?.left)) { // ???
 			rotateRight(currNode.right)
 			rotateLeft(currNode)
 
 			flipColors(currNode)
 		}
-
-		return currNode
 	}
-	private fun moveRedRight(node: RBTreeNode<K, V>?): RBTreeNode<K, V>? {
-		val currNode: RBTreeNode<K, V>? = node
+	private fun moveRedRight(currNode: RBTreeNode<K, V>) {
+		flipColors(currNode)
 
-		if (currNode != null) {
+		if (checkNodeRed(currNode.left?.left)) {
+			rotateRight(currNode)
+
 			flipColors(currNode)
-
-			if (checkNodeRed(currNode.left?.left)) {
-				rotateRight(currNode)
-
-				flipColors(currNode)
-			}
 		}
-
-		return currNode
 	}
-	private fun balance(currNode: RBTreeNode<K, V>?): RBTreeNode<K, V>? {
+	private fun balance(currNode: RBTreeNode<K, V>?) {
 
 		if (currNode != null) {
-			if (checkNodeRed(currNode.right) && !checkNodeRed(currNode.left)) {
+			if (checkNodeRed(currNode.right) && !checkNodeRed(currNode.left)) { // delete right conditions??
 				rotateLeft(currNode)
 			}
 			if (checkNodeRed(currNode.left) && checkNodeRed(currNode.left?.left)) {
@@ -203,7 +208,5 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 				flipColors(currNode)
 			}
 		}
-
-		return currNode
 	}
 }

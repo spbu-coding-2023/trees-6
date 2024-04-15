@@ -455,6 +455,130 @@ class RBTreeTests {
 	}
 
 	@Test
+	@DisplayName("full deletion test")
+	fun fullDeletion1() {
+		assert(tree.insert(8, 14))
+		assert(tree.insert(4, 27))
+		assert(tree.insert(2, 5))
+		assert(tree.insert(6, 91))
+		assert(tree.insert(1, 84))
+		assert(tree.insert(3, 25))
+		assert(tree.insert(5, 4))
+		assert(tree.insert(7, 0))
+		assert(tree.insert(12, 0))
+		assert(tree.size == 9)
+
+		assert(tree.delete(8))
+		assert(!tree.delete(9))
+		assert(tree.delete(12))
+		assert(tree.delete(1))
+		assert(tree.delete(3))
+		assert(tree.delete(7))
+		assert(tree.delete(4))
+		assert(!tree.delete(8))
+		assert(tree.delete(5))
+		assert(tree.delete(2))
+		assert(tree.delete(6))
+
+		assert(tree.size == 0)
+		assert(checkTreeInvariants())
+
+		// добавить больше тестов!!
+	}
+
+	@Test
+	@DisplayName("full deletion test")
+	fun fullDeletion2() {
+		assert(tree.insert(8, 14))
+		assert(tree.insert(4, 27))
+		assert(tree.insert(2, 5))
+		assert(tree.insert(6, 91))
+		assert(tree.insert(1, 84))
+		assert(tree.insert(3, 25))
+		assert(tree.insert(7, 4))
+		assert(tree.insert(5, 0))
+		assert(tree.insert(12, 0))
+		assert(tree.size == 9)
+
+		assert(tree.delete(8))
+		assert(!tree.delete(9))
+		assert(tree.delete(12))
+		assert(tree.delete(1))
+		assert(tree.delete(3))
+		assert(tree.delete(7))
+		assert(tree.delete(4))
+		assert(!tree.delete(8))
+		assert(tree.delete(5))
+		assert(tree.delete(2))
+		assert(tree.delete(6))
+
+		assert(tree.size == 0)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("full deletion test")
+	fun fullDeletion3() {
+		assert(tree.insert(8, 14))
+		assert(tree.insert(4, 27))
+		assert(tree.insert(2, 5))
+		assert(tree.insert(6, 91))
+		assert(tree.insert(1, 84))
+		assert(tree.insert(3, 25))
+		assert(tree.insert(5, 4))
+		assert(tree.insert(7, 0))
+		assert(tree.insert(12, 0))
+		assert(tree.size == 9)
+
+		assert(tree.delete(8))
+		assert(!tree.delete(9))
+		assert(tree.delete(1))
+		assert(tree.delete(3))
+		assert(tree.delete(7))
+		assert(tree.delete(4))
+		assert(!tree.delete(8))
+		assert(tree.delete(5))
+		assert(tree.delete(12))
+		assert(tree.delete(2))
+		assert(tree.delete(6))
+
+		assert(tree.size == 0)
+		assert(checkTreeInvariants())
+
+	}
+
+	@Test
+	@DisplayName("full deletion test")
+	fun fullDeletion4() {
+		assert(tree.insert(8, 14))
+		assert(tree.insert(4, 27))
+		assert(tree.insert(2, 5))
+		assert(tree.insert(6, 91))
+		assert(tree.insert(1, 84))
+		assert(tree.insert(3, 25))
+		assert(tree.insert(5, 4))
+		assert(tree.insert(7, 0))
+		assert(tree.insert(12, 0))
+		assert(tree.size == 9)
+
+		assert(tree.delete(8))
+		assert(!tree.delete(9))
+		assert(tree.delete(1))
+		assert(tree.delete(3))
+		assert(tree.delete(7))
+		assert(tree.delete(4))
+		assert(tree.delete(12))
+		assert(!tree.delete(8))
+		assert(tree.delete(5))
+		assert(tree.delete(2))
+		assert(tree.delete(6))
+
+		assert(tree.size == 0)
+		assert(checkTreeInvariants())
+
+	}
+
+	@Test
 	@DisplayName("simple iterator test")
 	fun iterateSimpleTree() {
 		repeat(100) {
