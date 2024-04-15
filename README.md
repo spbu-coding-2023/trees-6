@@ -56,7 +56,7 @@ See [DOCS.md](./DOCS.md)
 * Marchenko Vadim - AVL-tree. [GitHub](https://github.com/elbananium), [Contact](https://t.me/elbananum).
 * Kuznetsov Dmitry - Red-black tree. [GitHub](https://github.com/f1i3g3), [Contact](https://t.me/f1i3g3).
 ## Project status <a name="status"></a>
-In development. 
+Released. 
 ## Contributing <a name="contributing"></a>
 See [CONTRIBUTING.md](./CONTRIBUTING.md)
 ## License <a name="license"></a>
