@@ -38,11 +38,9 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 		if (checkNodeRed(currNode.left) && checkNodeRed(currNode.left?.left)) {
 			rotateRight(currNode)
 		}
-		/*
-		if (checkNodeRed(currNode.left) && checkNodeRed(currNode.right)) { // order?
+		if (checkNodeRed(currNode.left) && checkNodeRed(currNode.right)) {
 			flipColors(currNode)
 		}
-		*/
 
 		return currNode
 	}
@@ -98,11 +96,9 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 			return false
 		}
 
-		/*
-		if (!checkNodeRed(root?.left) && !checkNodeRed(root?.right)) { // don't need this??
+		if (!checkNodeRed(root?.left) && !checkNodeRed(root?.right)) {
 			root?.setColor(RBTreeNode.Color.Red)
 		}
-		*/
 
 		root = deleteNode(key, root)
 		size--
@@ -114,8 +110,7 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 		val currNode = node ?: return null
 
 		if (key < currNode.key)  {
-			if (currNode.left == null || (!checkNodeRed(currNode.left) && !checkNodeRed(currNode.left?.left))) { // should remove it??
-				// currNode = moveRedLeft(currNode)
+			if (!checkNodeRed(currNode.left) && !checkNodeRed(currNode.left?.left)) {
 				moveRedLeft(currNode)
 			}
 			currNode.left = deleteNode(key, currNode.left)
@@ -128,7 +123,7 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 				return null
 			}
 
-			if (currNode.right == null || (!checkNodeRed(currNode.right) && !checkNodeRed(currNode.right?.left))) { // should remove it??
+			if (!checkNodeRed(currNode.right) && !checkNodeRed(currNode.right?.left)) {
 				moveRedRight(currNode)
 			}
 
@@ -177,9 +172,9 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 	}
 
 	private fun moveRedLeft(currNode: RBTreeNode<K, V>) {
-		flipColors(currNode) // ???
+		flipColors(currNode)
 
-		if (checkNodeRed(currNode.right?.left)) { // ???
+		if (checkNodeRed(currNode.right?.left)) {
 			rotateRight(currNode.right)
 			rotateLeft(currNode)
 
@@ -198,7 +193,7 @@ open class RBTree <K : Comparable<K>, V> : AbstractTree<K, V, RBTreeNode<K, V>>(
 	private fun balance(currNode: RBTreeNode<K, V>?) {
 
 		if (currNode != null) {
-			if (checkNodeRed(currNode.right) && !checkNodeRed(currNode.left)) { // delete right conditions??
+			if (checkNodeRed(currNode.right) && !checkNodeRed(currNode.left)) {
 				rotateLeft(currNode)
 			}
 			if (checkNodeRed(currNode.left) && checkNodeRed(currNode.left?.left)) {
