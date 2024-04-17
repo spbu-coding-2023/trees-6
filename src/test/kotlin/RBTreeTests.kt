@@ -57,7 +57,7 @@ class RBTreeTests {
 						stack.add(rightChild)
 					}
 
-					if (getBH(0, leftChild) != getBH(0, rightChild)) { // BH from this place
+					if (getBH(0, leftChild) != getBH(0, rightChild)) { // BH from this place, there's all balanced up the tree already
 						return false
 					}
 				}
@@ -85,6 +85,8 @@ class RBTreeTests {
 		tree = RBTree()
 	}
 
+	// Tests for BST
+
 	@Test
 	@DisplayName("check empty tree")
 	fun checkEmptyTree() {
@@ -105,7 +107,7 @@ class RBTreeTests {
 	}
 
 	@Test
-	@DisplayName("another simple tree test")
+	@DisplayName("simple tree test")
 	fun simpleTreeSample1() {
 		assert(tree.insert(8, 14))
 		assert(tree.insert(18, 27))
@@ -175,8 +177,8 @@ class RBTreeTests {
 	}
 
 	@Test
-	@DisplayName("simple deletion test")
-	fun deleteLeafNode1() {
+	@DisplayName("delete node")
+	fun deleteLeafNode() {
 		assert(tree.insert(10, 5))
 		assert(tree.insert(5, 2))
 		assert(tree.insert(15, 3))
@@ -188,7 +190,7 @@ class RBTreeTests {
 	}
 
 	@Test
-	@DisplayName("root deletion test")
+	@DisplayName("delete root")
 	fun deleteRootNode() {
 		assert(tree.insert(10, 5))
 		assert(tree.insert(15, 2))
@@ -417,9 +419,11 @@ class RBTreeTests {
 		assert(checkTreeInvariants())
 	}
 
+	// Some additional tests (including cases of red-black tree)
+
 	@Test
-	@DisplayName("root deletion test")
-	fun rootFromBigTree1() {
+	@DisplayName("another root deletion test")
+	fun deleteRootFromSomeTree1() {
 		assert(tree.insert(8, 14))
 		assert(tree.insert(18, 27))
 		assert(tree.insert(5, 5))
@@ -436,8 +440,8 @@ class RBTreeTests {
 	}
 
 	@Test
-	@DisplayName("root deletion test")
-	fun rootFromBigTree2() {
+	@DisplayName("another root deletion test")
+	fun deleteRootFromSomeTree2() {
 		assert(tree.insert(8, 14))
 		assert(tree.insert(4, 27))
 		assert(tree.insert(2, 5))
@@ -454,8 +458,226 @@ class RBTreeTests {
 		assert(checkTreeInvariants())
 	}
 
+	// brush all code
 	@Test
-	@DisplayName("full deletion test")
+	@DisplayName("delete red node with left subtree and right leaf")
+	fun deleteRedNodeLeftSubtreeRightLeaf() {
+		assert(tree.insert(20, 1))
+		assert(tree.insert(10, 1))
+		assert(tree.insert(40, 1))
+		assert(tree.insert(30, 1))
+		assert(tree.insert(45, 5))
+		assert(tree.insert(33, 90))
+		assert(tree.delete(40))
+
+		assert(tree.size == 5)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("delete red node with no children")
+	fun deleteRedNodeNoChildren() {
+		assert(tree.insert(20, 7))
+		assert(tree.insert(10, 7))
+		assert(tree.insert(40, 34))
+		assert(tree.insert(30, 55))
+		assert(tree.insert(45, 90))
+		assert(tree.insert(33, 66))
+		assert(tree.delete(33))
+
+		assert(tree.size == 5)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("delete black node with one right red child")
+	fun deleteBlackNodeOneRightRedChild() {
+		assert(tree.insert(20, 20))
+		assert(tree.insert(10, 10))
+		assert(tree.insert(40, 40))
+		assert(tree.insert(30, 40))
+		assert(tree.insert(45, 40))
+		assert(tree.insert(25, 40))
+		assert(tree.delete(30))
+
+		assert(tree.size == 5)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("delete black node with one left red child")
+	fun deleteBlackNodeOneLeftRedChild() {
+		assert(tree.insert(20, 6))
+		assert(tree.insert(10, 4))
+		assert(tree.insert(40, 3))
+		assert(tree.insert(31, 3))
+		assert(tree.insert(45, 2))
+		assert(tree.insert(34, 1))
+		assert(tree.delete(31))
+
+		assert(tree.size == 5)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("delete black node with no children and red sibling")
+	fun deleteBlackNodeNoChildrenRedSibling() {
+		assert(tree.insert(20, 4))
+		assert(tree.insert(10, 45))
+		assert(tree.insert(40, 55))
+		assert(tree.insert(30, 19))
+		assert(tree.insert(45, 10))
+		assert(tree.insert(33, 3))
+		assert(tree.delete(10))
+
+		assert(tree.size == 5)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("delete black node with left subtree and right leaf")
+	fun deleteBlackNodeLeftSubtreeRightLeaf() {
+		assert(tree.insert(100, 76))
+		assert(tree.insert(80, 67))
+		assert(tree.insert(120, 4))
+		assert(tree.insert(60, 6))
+		assert(tree.insert(90, 7))
+		assert(tree.insert(65, 5))
+		assert(tree.delete(100))
+
+		assert(tree.size == 5)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("delete left black node with red right child")
+	fun deleteLeftBlackNodeRedRightChild() {
+		assert(tree.insert(100, 45))
+		assert(tree.insert(80, 567))
+		assert(tree.insert(120, 2))
+		assert(tree.insert(60, 3))
+		assert(tree.insert(90, 4))
+		assert(tree.insert(88, 5))
+		assert(tree.delete(60))
+
+		assert(tree.size == 5)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("delete black node with no children and black sibling")
+	fun deleteBlackNodeNoChildrenBlackSibling() {
+		assert(tree.insert(110, 5))
+		assert(tree.insert(220, 7))
+		assert(tree.insert(80, 6))
+		assert(tree.insert(230, 5))
+		assert(tree.delete(230))
+		assert(tree.delete(80))
+
+		assert(tree.size == 2)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("delete left red node with no children")
+	fun deleteLeftRedNodeNoChildren() {
+		assert(tree.insert(23, 1))
+		assert(tree.insert(11, 2))
+		assert(tree.insert(37, 3))
+		assert(tree.insert(17, 4))
+
+		assert(tree.delete(17))
+
+		assert(tree.size == 3)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("delete red node with two black children")
+	fun deleteRedNodeTwoBlackChildren() {
+		assert(tree.insert(23, 1))
+		assert(tree.insert(37, 2))
+		assert(tree.insert(20, 3))
+		assert(tree.insert(19, 4))
+		assert(tree.insert(22, 5))
+		assert(tree.delete(20))
+
+		assert(tree.size == 4)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("delete black node with one red child")
+	fun deleteBlackNodeOneRedChild() {
+		assert(tree.insert(5, 9))
+		assert(tree.insert(3, 9))
+		assert(tree.insert(6, 9))
+		assert(tree.insert(4, 9))
+		assert(tree.insert(1, 9))
+		assert(tree.insert(7, 9))
+		assert(tree.delete(6))
+
+		assert(tree.size == 5)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("delete black node with two children")
+	fun deleteBlackNodeTwoChildren() {
+		assert(tree.insert(5, 4))
+		assert(tree.insert(3, 3))
+		assert(tree.insert(6, 2))
+		assert(tree.insert(4, 1))
+		assert(tree.insert(1, 0))
+		assert(tree.delete(3))
+
+		assert(tree.size == 4)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("delete black node with no children and black sibling which has left red child")
+	fun deleteBlackNodeNoChildrenBlackSiblingLeftRedChild() {
+		assert(tree.insert(3, -1))
+		assert(tree.insert(1, -2))
+		assert(tree.insert(5, -3))
+		assert(tree.insert(4, -4))
+		assert(tree.delete(1))
+
+		assert(tree.size == 3)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("delete black node with no children and black sibling which has right red child")
+	fun deleteBlackNodeNoChildrenBlackSiblingRightRedChild() {
+		assert(tree.insert(3, 4))
+		assert(tree.insert(1, 4))
+		assert(tree.insert(5, 4))
+		assert(tree.insert(6, 5))
+		assert(tree.delete(1))
+
+		assert(tree.size == 3)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("delete black node with no children and red sibling which has only black children")
+	fun deleteBlackNodeNoChildrenRedSiblingBlackChildren() {
+		assert(tree.insert(6, -1))
+		assert(tree.insert(4, 1))
+		assert(tree.insert(7, -1))
+		assert(tree.insert(2, 1))
+		assert(tree.insert(5, -1))
+		assert(tree.insert(1, 1))
+		assert(tree.delete(7))
+
+		assert(tree.size == 5)
+		assert(checkTreeInvariants())
+	}
+
+	@Test
+	@DisplayName("full deletion test of some tree in different orders")
 	fun fullDeletion1() {
 		assert(tree.insert(8, 14))
 		assert(tree.insert(4, 27))
@@ -482,12 +704,10 @@ class RBTreeTests {
 
 		assert(tree.size == 0)
 		assert(checkTreeInvariants())
-
-		// добавить больше тестов!!
 	}
 
 	@Test
-	@DisplayName("full deletion test")
+	@DisplayName("full deletion test of some tree in different orders")
 	fun fullDeletion2() {
 		assert(tree.insert(8, 14))
 		assert(tree.insert(4, 27))
@@ -517,7 +737,7 @@ class RBTreeTests {
 	}
 
 	@Test
-	@DisplayName("full deletion test")
+	@DisplayName("full deletion test of some tree in different orders")
 	fun fullDeletion3() {
 		assert(tree.insert(8, 14))
 		assert(tree.insert(4, 27))
@@ -548,7 +768,7 @@ class RBTreeTests {
 	}
 
 	@Test
-	@DisplayName("full deletion test")
+	@DisplayName("full deletion test of some tree in different orders")
 	fun fullDeletion4() {
 		assert(tree.insert(8, 14))
 		assert(tree.insert(4, 27))
@@ -577,6 +797,8 @@ class RBTreeTests {
 		assert(checkTreeInvariants())
 
 	}
+
+	// Iterator tests for BST
 
 	@Test
 	@DisplayName("simple iterator test")
